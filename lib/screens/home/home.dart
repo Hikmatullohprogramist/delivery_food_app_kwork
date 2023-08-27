@@ -1,4 +1,6 @@
+import 'package:delivery_food_app/data/service/service.dart';
 import 'package:delivery_food_app/screens/info_screen/info_screen.dart';
+import 'package:delivery_food_app/widgets/avatar.dart';
 import 'package:delivery_food_app/widgets/custom_height_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,17 +16,16 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: () {
+ApiService().getOrders(1);
+      },
+
+      ),
       appBar: CustomAppBar(
         preferredSize: Size.fromHeight(100.0),
         title: Text('Новые'),
         action: [
-          CircleAvatar(
-            radius: 40,
-            child: Image.asset(
-              "assets/avatar.png",
-              fit: BoxFit.fill,
-            ),
-          )
+          AvatarWidget(),
         ],
       ),
       body: Stack(
@@ -44,7 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         margin: EdgeInsets.all(12),
                         padding: EdgeInsets.all(12),
                         width: 360,
-                        height: 276,
                         clipBehavior: Clip.antiAlias,
                         decoration: ShapeDecoration(
                           color: Color(0xFFFFF8F6),

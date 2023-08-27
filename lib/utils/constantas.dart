@@ -1,0 +1,1 @@
+String BASE_URL = 'https://zumda-client.devdata.uz/api/';
