@@ -2,8 +2,10 @@
 
 import 'dart:convert';
 
+import 'package:delivery_food_app/data/model/error_model.dart';
 import 'package:delivery_food_app/data/model/login_model.dart';
 import 'package:delivery_food_app/data/model/order_model.dart';
+import 'package:delivery_food_app/data/model/user_model.dart';
 import 'package:delivery_food_app/main.dart';
 import 'package:delivery_food_app/utils/constantas.dart';
 import 'package:delivery_food_app/utils/locator.dart';
@@ -22,23 +24,30 @@ class ApiService {
   }
 
   Future<void> addHeadrs() async {
+    print("HEADER WILL ADDED");
     dio.options.headers.addAll({
-      'token': "${getIt.get<PrefUtils>().getToken()}",
       'accept': 'application/json',
-      'Content-Type': 'application/json',
-      'X-CSRF-TOKEN': ''
+      'X-CSRF-TOKEN': '',
+      'Authorization': 'Bearer ${getIt.get<PrefUtils>().getToken()}',
     });
     return;
   }
 
+  var headers = {
+    'accept': 'application/json',
+    'X-CSRF-TOKEN': '',
+    'Authorization': 'Bearer ${getIt.get<PrefUtils>().getToken()}',
+  };
+
   Future<LoginResponse?> login(String email, String password) async {
+    late final Response response;
     var data = json.encode({
       "email": email.trim(),
       "password": password.trim(),
     });
 
     try {
-      final response = await dio.post(
+      response = await dio.post(
         "auth/login",
         data: data,
       );
@@ -48,38 +57,61 @@ class ApiService {
       } else {
         getX.Get.showSnackbar(getX.GetSnackBar(
           messageText: Text(
-            response.statusMessage.toString(),
+            response.data["message"].toString(),
           ),
         ));
       }
     } catch (e) {
       getX.Get.showSnackbar(getX.GetSnackBar(
-        messageText: Text(e.toString()),
+        messageText: Text(response.data["message"].toString()),
       ));
     }
     return null;
   }
 
-  Future<OrderModel> getOrders(int pageIndex) async {
+  Future<UserModel> getUserInfo() async {
     try {
-      final response = await dio.get("orders");
+      var response = await dio.request(
+        'auth/profile',
+        // Replace with the actual user info API endpoint
+        options: Options(
+          method: 'GET',
+          headers: headers,
+        ),
+      );
 
       if (response.statusCode == 200) {
-        return OrderModel.fromJson(response.data);
+        return UserModel.fromJson(response.data);
       } else {
-
-        final errorMessage = response.statusMessage ?? 'Unknown error';
-        throw DioError(
-          response: response,
-          error: 'Failed to fetch orders: $errorMessage',
-          requestOptions: RequestOptions(),
-        );
+        final newData = ErrorModel.fromJson(response.data);
+        getX.Get.snackbar("Error", newData.message);
+        throw newData.message;
       }
     } catch (e) {
-      throw DioError(
-        error: 'Error during order retrieval: $e',
-        requestOptions: RequestOptions(),
+      throw e;
+    }
+  }
+
+  Future<OrderModel?> getOrders() async {
+    try {
+      var response = await dio.request(
+        'orders',
+        options: Options(
+          method: 'GET',
+          headers: headers,
+        ),
       );
+
+      if (response.statusCode == 200) {
+        print("===========================================${response.data}");
+        return OrderModel.fromJson(response.data);
+      } else {
+        final newData = ErrorModel.fromJson(response.data);
+        getX.Get.snackbar("Error", newData.message);
+        return null;
+      }
+    } catch (e) {
+      throw e;
     }
   }
 }

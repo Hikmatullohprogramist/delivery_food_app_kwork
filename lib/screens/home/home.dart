@@ -1,9 +1,15 @@
+import 'dart:convert';
+
 import 'package:delivery_food_app/data/service/service.dart';
+import 'package:delivery_food_app/screens/home/home_view_model.dart';
 import 'package:delivery_food_app/screens/info_screen/info_screen.dart';
 import 'package:delivery_food_app/widgets/avatar.dart';
 import 'package:delivery_food_app/widgets/custom_height_app_bar.dart';
+import 'package:delivery_food_app/widgets/home_widget_item.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,10 +22,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {
-ApiService().getOrders(1);
-      },
-
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+       ApiService().getOrders();
+        },
       ),
       appBar: CustomAppBar(
         preferredSize: Size.fromHeight(100.0),
@@ -28,7 +34,7 @@ ApiService().getOrders(1);
           AvatarWidget(),
         ],
       ),
-      body: Stack(
+      body: Consumer<HomeViewModel>(builder: (context, value, child) => Stack(
         children: [
           Image.asset("assets/background_all.png"),
           Column(
@@ -36,129 +42,16 @@ ApiService().getOrders(1);
               Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,
+                  itemCount: value.ordersList!.data.length,
                   itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        Get.to(InfoScreen(title: "Заказ №32",));
-                      },
-                      child: Container(
-                        margin: EdgeInsets.all(12),
-                        padding: EdgeInsets.all(12),
-                        width: 360,
-                        clipBehavior: Clip.antiAlias,
-                        decoration: ShapeDecoration(
-                          color: Color(0xFFFFF8F6),
-                          shape: RoundedRectangleBorder(
-                            side:
-                                BorderSide(width: 1.5, color: Color(0xFFD8C2BE)),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  width: 40,
-                                  height: 40,
-                                  decoration: ShapeDecoration(
-                                    color: Color(0xFFB4271B),
-                                    shape: OvalBorder(),
-                                  ),
-                                  child: Image.asset("assets/food_bank.png"),
-                                ),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                Text(
-                                  'Заказ №23',
-                                  style: TextStyle(
-                                    color: Color(0xFF201A19),
-                                    fontSize: 22,
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.w400,
-                                    height: 1.27,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      '•  Плов Чайханский с бараниной',
-                                      style: TextStyle(
-                                        color: Color(0xFF201A19),
-                                        fontSize: 14,
-                                        fontFamily: 'Roboto',
-                                        fontWeight: FontWeight.w500,
-                                        height: 1.43,
-                                      ),
-                                    ),
-                                    Text(
-                                      '1 шт.',
-                                      textAlign: TextAlign.right,
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14,
-                                        fontFamily: 'Roboto',
-                                        fontWeight: FontWeight.w500,
-                                        height: 1.43,
-                                      ),
-                                    )
-                                  ],
-                                );
-                              },
-                              itemCount: 3,
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            SizedBox(
-                              width: 328,
-                              child: Text(
-                                'Сумма заказа: 140 000 сум',
-                                style: TextStyle(
-                                  color: Color(0xFF534341),
-                                  fontSize: 20,
-                                  fontFamily: 'Martian Mono',
-                                  fontWeight: FontWeight.w500,
-                                  height: 1.43,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 50,
-                            ),
-                            Text(
-                              '23.01.2023\n15:11',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 11,
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.w500,
-                                height: 1.45,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
+                    return HomeWidgetItem(title: "TITLE", items: value.ordersList!.data, price: 123123, date: "2023020330");
                   },
                 ),
               )
             ],
           )
         ],
-      ),
+      ),),
     );
   }
 }

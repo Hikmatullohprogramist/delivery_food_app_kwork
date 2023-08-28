@@ -1,4 +1,6 @@
 import 'package:delivery_food_app/screens/auth/auth_view_model.dart';
+import 'package:delivery_food_app/screens/home/home_view_model.dart';
+import 'package:delivery_food_app/screens/profile/profile_view_model.dart';
 import 'package:delivery_food_app/screens/splash/splash.dart';
 import 'package:dio_request_inspector/dio_request_inspector.dart';
 import 'package:dio_request_inspector/presentation/main/page/main_page.dart';
@@ -31,6 +33,12 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => AuthModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => UserInfoViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => HomeViewModel(),
         ),
       ],
       child: GetMaterialApp(
