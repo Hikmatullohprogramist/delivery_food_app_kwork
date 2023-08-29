@@ -1,10 +1,10 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, null_argument_to_non_null_type
 
 import 'dart:convert';
 
+import 'package:delivery_food_app/data/model/OrderModel.dart';
 import 'package:delivery_food_app/data/model/error_model.dart';
 import 'package:delivery_food_app/data/model/login_model.dart';
-import 'package:delivery_food_app/data/model/order_model.dart';
 import 'package:delivery_food_app/data/model/user_model.dart';
 import 'package:delivery_food_app/main.dart';
 import 'package:delivery_food_app/utils/constantas.dart';
@@ -92,7 +92,7 @@ class ApiService {
     }
   }
 
-  Future<OrderModel?> getOrders() async {
+  Future<OrderModel> getOrders() async {
     try {
       var response = await dio.request(
         'orders',
@@ -108,7 +108,7 @@ class ApiService {
       } else {
         final newData = ErrorModel.fromJson(response.data);
         getX.Get.snackbar("Error", newData.message);
-        return null;
+        return Future.value();
       }
     } catch (e) {
       throw e;

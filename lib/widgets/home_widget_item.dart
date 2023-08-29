@@ -4,16 +4,19 @@ import 'package:get/get.dart';
 
 class HomeWidgetItem extends StatelessWidget {
   final String title;
-  final List items;
+  // final List items;
+  final int itemcount;
+  final String itemName;
+  final int itemAmount;
   final num price;
   final String date;
 
   const HomeWidgetItem({
     super.key,
     required this.title,
-    required this.items,
+    // required this.items,
     required this.price,
-    required this.date,
+    required this.date, required this.itemcount, required this.itemName, required this.itemAmount,
   });
 
   @override
@@ -70,12 +73,13 @@ class HomeWidgetItem extends StatelessWidget {
             ),
             ListView.builder(
               shrinkWrap: true,
+
               itemBuilder: (context, index) {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '•  Плов Чайханский с бараниной',
+                      '•  $itemName',
                       style: TextStyle(
                         color: Color(0xFF201A19),
                         fontSize: 14,
@@ -85,7 +89,7 @@ class HomeWidgetItem extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '1 шт.',
+                      '$itemAmount шт.',
                       textAlign: TextAlign.right,
                       style: TextStyle(
                         color: Colors.black,
@@ -98,7 +102,7 @@ class HomeWidgetItem extends StatelessWidget {
                   ],
                 );
               },
-              itemCount: 3,
+              itemCount: itemcount,
             ),
             SizedBox(
               height: 20,
