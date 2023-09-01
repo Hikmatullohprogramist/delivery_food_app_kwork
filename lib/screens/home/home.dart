@@ -4,7 +4,11 @@ import 'package:delivery_food_app/widgets/avatar.dart';
 import 'package:delivery_food_app/widgets/custom_height_app_bar.dart';
 import 'package:delivery_food_app/widgets/home_widget_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:provider/provider.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,13 +17,14 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          ApiService().getOrders();
+
         },
       ),
       appBar: CustomAppBar(
@@ -50,10 +55,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             title:
                                 "Заказ № ${value.ordersList!.data![index].id}",
                             price: 123123,
-                            date: "2023020330",
-                            itemcount: value.ordersList!.data![index].items!.length,
-                            itemName: value.ordersList!.data![index].items![index].id.toString(),
-                            itemAmount: int.parse(value.ordersList!.data![index].items![index].quantity.toString()),
+                            date: value.ordersList!.data![index].createdAt
+                                .toString(),
+                            itemcount:
+                                value.ordersList!.data![index].items!.length,
+                            itemName: value
+                                .ordersList!.data![index].items![index].id
+                                .toString(),
+                            itemAmount: int.parse(value
+                                .ordersList!.data![index].items![index].quantity
+                                .toString()),
                           );
                         },
                       ),

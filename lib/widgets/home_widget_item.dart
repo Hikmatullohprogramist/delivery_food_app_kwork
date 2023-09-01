@@ -1,9 +1,11 @@
 import 'package:delivery_food_app/screens/info_screen/info_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class HomeWidgetItem extends StatelessWidget {
   final String title;
+
   // final List items;
   final int itemcount;
   final String itemName;
@@ -16,7 +18,10 @@ class HomeWidgetItem extends StatelessWidget {
     required this.title,
     // required this.items,
     required this.price,
-    required this.date, required this.itemcount, required this.itemName, required this.itemAmount,
+    required this.date,
+    required this.itemcount,
+    required this.itemName,
+    required this.itemAmount,
   });
 
   @override
@@ -73,7 +78,6 @@ class HomeWidgetItem extends StatelessWidget {
             ),
             ListView.builder(
               shrinkWrap: true,
-
               itemBuilder: (context, index) {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -124,7 +128,7 @@ class HomeWidgetItem extends StatelessWidget {
               height: 50,
             ),
             Text(
-              '23.01.2023\n15:11',
+              DateFormat("yyyy-mm-dd HH:MM").format(DateTime.parse(date)),
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 11,
