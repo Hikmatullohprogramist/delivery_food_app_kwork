@@ -18,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void didChangeDependencies() {
     Timer(const Duration(seconds: 2), () {
-      Get.offAll(()=>getIt.get<PrefUtils>().getToken().isNotEmpty
+      Get.offAll(() => getIt.get<PrefUtils>().getToken().isNotEmpty
           ? const BottomNavigatorScreen()
           : const LoginScreen());
     });

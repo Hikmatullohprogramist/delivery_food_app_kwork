@@ -44,6 +44,7 @@ class ApiService {
     var data = json.encode({
       "email": email.trim(),
       "password": password.trim(),
+      "device_name": "Mac"
     });
 
     try {
@@ -95,7 +96,7 @@ class ApiService {
   Future<OrderModel> getOrders() async {
     try {
       var response = await dio.request(
-        'orders',
+        'restaurants/1/orders/?status=accepted|preparing|prepared',
         options: Options(
           method: 'GET',
           headers: headers,

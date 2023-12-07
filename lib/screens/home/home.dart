@@ -17,15 +17,12 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-
-        },
+        onPressed: () {},
       ),
       appBar: CustomAppBar(
         preferredSize: Size.fromHeight(100.0),
@@ -49,22 +46,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     Expanded(
                       child: ListView.builder(
                         shrinkWrap: true,
-                        itemCount: value.ordersList!.data!.length,
+                        itemCount: value.ordersList!.items.length,
                         itemBuilder: (context, index) {
+                          var data = value.ordersList;
                           return HomeWidgetItem(
-                            title:
-                                "Заказ № ${value.ordersList!.data![index].id}",
+                            title: "Заказ № ${data!.paymentType}",
                             price: 123123,
-                            date: value.ordersList!.data![index].createdAt
-                                .toString(),
-                            itemcount:
-                                value.ordersList!.data![index].items!.length,
-                            itemName: value
-                                .ordersList!.data![index].items![index].id
-                                .toString(),
-                            itemAmount: int.parse(value
-                                .ordersList!.data![index].items![index].quantity
-                                .toString()),
+                            date: data!.createdAt.toString(),
+                            itemcount: value.ordersList!.items.length,
+                            itemName: data.id.toString(),
+                            itemAmount: int.parse(data.clientId.toString()),
                           );
                         },
                       ),

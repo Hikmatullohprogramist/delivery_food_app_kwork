@@ -1,1 +1,1 @@
-String BASE_URL = 'https://zumda-client.devdata.uz/api/';
+String BASE_URL = 'https://zumdachi.devdata.uz/api/';
